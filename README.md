@@ -75,3 +75,19 @@ process.on('message', function (message) {
 process.send('READY');
 ```
 
+Controlling the Number of Workers
+---------------------------------
+
+Defining the number of worker processes you desire is easy. Simply pass a positive 
+integer as the second argument to WorkQueue like so:
+
+```javascript
+var nWorkers = 4,
+    workQueue = new WorkQueue('/path/to/worker.js', nWorkers);
+```
+
+By default mule chooses the number of worker processes based on the number of CPU
+cores available (via os.cpus().length). This is generally the most performant 
+option, though depending on the task your mileage may vary.
+
+
