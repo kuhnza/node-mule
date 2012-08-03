@@ -3,17 +3,19 @@ Mule.js
 
 Mule is a work queue for CPU intensive tasks. You can use it to offload tasks
 that would otherwise kill your fast, responsive event loop. It's a bit like
-threads a gogo, except using processes not threads.
+[Threads A GoGo](https://github.com/xk/node-threads-a-gogo/), except using 
+processes not threads.
 
-Mule works by using node's child_process.fork() method to pre-fork a bunch of 
-processes using a script you define. It sets up a task queue to which you can 
-push blocking tasks onto and listen for the result. As worker processes become
-available they alert the work queue that they're ready to accept more work. 
-Tasks are sent and results received using node's inbuilt IPC for forked node
-processes.
+Mule works by using node's [child_process.fork()](http://nodejs.org/api/child_process.html#child_process_child_process_fork_modulepath_args_options) 
+method to pre-fork a bunch of processes using a script you define. It sets up 
+a task queue to which you can push blocking tasks onto and listen for the 
+result. As worker processes become available they alert the work queue that 
+they're ready to accept more work. Tasks are sent and results received using 
+node's inbuilt IPC for forked node processes.
 
-We currently use this in production at Hubify at reasonable scale so it should
-be fairly bulletproof. If you notice anything odd though please submit an issue. 
+We currently use this in production at [Hubify](http://hubify.com) at reasonable 
+scale so it should be fairly bulletproof. That being said, if you notice anything 
+unusual (or how we can make it better) please raise a new issue. 
 
 Installation
 ------------
