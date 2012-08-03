@@ -12,6 +12,9 @@ available they alert the work queue that they're ready to accept more work.
 Tasks are sent and results received using node's inbuilt IPC for forked node
 processes.
 
+We currently use this in production at Hubify at reasonable scale so it should
+be fairly bulletproof. If you notice anything odd though please submit an issue. 
+
 Installation
 ------------
 
@@ -67,8 +70,6 @@ for (var i = 1; i <= 100; i++) {
 console.log('See, no blocking!');
 ```
 
-And here's the worker:
-
 **worker.js**
 ```javascript
 /**
@@ -92,6 +93,23 @@ process.on('message', function (message) {
  * always be the last line of your worker process script. */
 process.send('READY');
 ```
+
+The worker script is nothing special and can really be anything imaginable. Best
+of all it's okay to write blocking code in the workers. It's what they're
+there for. 
+
+There are some important things to note however:
+# Always include final line in the example worker above. Without it the parent 
+process won't know that the worker has started successfully. Also ensure that it's
+the very last thing to execute upon initialization so that you can confidently 
+send tasks to it knowing that everything is ready and in place. If you have async
+initialization code you should ensure that 'READY' is called after all async init 
+code has completed.
+# process.on('message'... must be present in order to receive jobs from the parent.
+# process.send(result) must also be present as the final step of your processing
+to send back the result and notify the parent process that the worker is ready for
+more work.
+
 
 Controlling the Number of Workers
 ---------------------------------
