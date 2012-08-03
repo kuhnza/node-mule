@@ -12,6 +12,24 @@ available they alert the work queue that they're ready to accept more work.
 Tasks are sent and results received using node's inbuilt IPC for forked node
 processes.
 
+Installation
+------------
+
+```
+npm install mule
+```
+
+Then to get up and running:
+
+```javascript
+var WorkQueue = require('mule').WorkQueue;
+
+var workQueue = new WorkQueue(__dirname + '/worker.js');
+workQueue.enqueue('some data for worker to process', function (result) {
+    // do something with result
+});
+```
+
 Contrived Example
 -----------------
 
